@@ -200,3 +200,12 @@ function soil_request_filter($query_vars) {
   return $query_vars;
 }
 add_filter('request', 'soil_request_filter');
+
+
+function themeslug_remove_hentry( $classes ) {
+    if ( is_page() ) {
+        $classes = array_diff( $classes, array( 'hentry' ) );
+    }
+    return $classes;
+}
+add_filter( 'post_class','themeslug_remove_hentry' );
