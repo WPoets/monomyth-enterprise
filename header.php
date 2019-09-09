@@ -39,11 +39,26 @@
 <div id="background_ovelay"></div>
 <?php
 
-$app=&aw2_library::get_array_ref('app');
+/* $app=&aw2_library::get_array_ref('app');
 
 if(isset($app['collection']['config']) && aw2_library::get_module($app['collection']['config'],'header',true)){
 	echo aw2_library::module_run($app['collection']['config'],'header');
 }	
 else if(aw2_library::get_module(['service'=>'core'],'header',true)){
 	echo aw2_library::module_run(['service'=>'core'],'header');
+}
+ */
+
+$awesome_core=&aw2_library::get_array_ref('awesome_core');
+
+$app=&aw2_library::get_array_ref('app');
+if(isset($app['configs']['header'])){
+	$header = $app['configs']['header'];
+	echo aw2_library::parse_shortcode($header['code']);
+}
+else if(isset($awesome_core['header'])){
+	echo aw2_library::parse_shortcode($awesome_core['header']['code']);
+	if(isset($slug)){
+		unset($awesome_core[$slug]); // now we don't need this data
+	}
 }
