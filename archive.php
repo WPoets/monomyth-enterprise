@@ -12,26 +12,25 @@ get_header(); ?>
 			$app=&aw2_library::get_array_ref('app');
 			$awesome_core=&aw2_library::get_array_ref('awesome_core');
 			
-			$content_layout ='archive-content-layout';
-			$collection='';
-			
-			if(aw2_library::get_module(['service'=>'core'],$content_layout,true)){
-				$collection=['service'=>'core'];
+			$content_layout ='';
+						
+			if(isset($awesome_core['archive-content-layout'])){
+				$content_layout = $awesome_core['archive-content-layout']['code'];
+				unset($awesome_core['archive-content-layout']); // now we don't need this data
 			}
 			
-			if(aw2_library::get_module($app['collection']['config'],$content_layout,true)){
+			if(aw2_library::get_post_from_slug('archive-content-layout',$app['collection']['config']['post_type'],$module_post)){
 
-				$collection=$app['collection']['config'];
+				$content_layout =$module_post->post_content;
 			}
-			
-			if(is_post_type_archive( ))
+			else if(is_post_type_archive( ))
 			{
 				$post_type = get_query_var('post_type');
 				aw2_library::set('current_archive_name',$post_type);
 
-				if(aw2_library::get_module(['service'=>'core'],$post_type . '-archive-content-layout',true)){
-					$content_layout = $post_type . '-archive-content-layout';
-					$collection=['service'=>'core'];
+				if(isset($awesome_core[$post_type . '-archive-content-layout'])){
+					$content_layout = $awesome_core[$post_type . '-archive-content-layout']['code'];
+					unset($awesome_core[$post_type . '-archive-content-layout']); // now we don't need this data
 				}
 			}
 			else if(is_tax())
@@ -42,10 +41,9 @@ get_header(); ?>
 				aw2_library::set('current_archive_name',$tax->name);
 				aw2_library::set('default_term_id',$tax->term_id);
 
-								
-				if(aw2_library::get_module(['service'=>'core'],$tax->taxonomy . '-archive-content-layout',true)){
-					$content_layout = $tax->taxonomy . '-archive-content-layout';
-					$collection=['service'=>'core'];
+				if(isset($awesome_core[$tax->taxonomy  . '-archive-content-layout'])){
+					$content_layout = $awesome_core[$tax->taxonomy  . '-archive-content-layout']['code'];
+					unset($awesome_core[$tax->taxonomy  . '-archive-content-layout']); // now we don't need this data
 				}
 			}
 			else if(is_category()){
@@ -54,10 +52,10 @@ get_header(); ?>
 				aw2_library::set('default_term_slug',$cat->slug);
 				aw2_library::set('current_archive_name',$cat->name);
 				aw2_library::set('default_term_id',$cat->term_id);
-								
-				if(aw2_library::get_module(['service'=>'core'],$cat->slug  . '-archive-content-layout',true)){
-					$content_layout = $cat->slug  . '-archive-content-layout';
-					$collection=['service'=>'core'];
+		
+				if(isset($awesome_core[$cat->slug  . '-archive-content-layout'])){
+					$content_layout = $awesome_core[$cat->slug  . '-archive-content-layout']['code'];
+					unset($awesome_core[$cat->slug  . '-archive-content-layout']); // now we don't need this data
 				}
 			}
 			else if( is_tag()){
@@ -68,12 +66,10 @@ get_header(); ?>
 				aw2_library::set('current_archive_name',$tax->name);
 				aw2_library::set('default_term_id',$tax->term_id);
 				
-												
-				if(aw2_library::get_module(['service'=>'core'],$tax->taxonomy . '-archive-content-layout',true)){
-					$content_layout = $tax->taxonomy . '-archive-content-layout';
-					$collection=['service'=>'core'];
+				if(isset($awesome_core[$tax->taxonomy  . '-archive-content-layout'])){
+					$content_layout = $awesome_core[$tax->taxonomy  . '-archive-content-layout']['code'];
+					unset($awesome_core[$tax->taxonomy  . '-archive-content-layout']); // now we don't need this data
 				}
-				
 			}
 			else if( is_author()){
 			
@@ -88,21 +84,19 @@ get_header(); ?>
 				aw2_library::set('current_author_name',$curauth->display_name);
 				aw2_library::set('current_author',$curauth);
 				
-	
+				if(!aw2_library::get_post_from_slug( 'author-archive','aw2_page',$module_post))
+					aw2_library::get_post_from_slug( 'archive','aw2_core',$module_post);
+				$content_layout =$module_post->post_content;
+				
 				if(isset($awesome_core['author-archive-content-layout'])){
 					$content_layout = $awesome_core['author-archive-content-layout']['code'];
 					unset($awesome_core['author-archive-content-layout']); // now we don't need this data
 				}
-				
-				if(aw2_library::get_module(['service'=>'core'],'author-archive-content-layout',true)){
-					$content_layout = 'author-archive-content-layout';
-					$collection=['service'=>'core'];
-				}
-				
 			}
-			
-			if(!empty($collection))		
-				echo aw2_library::module_run($collection,$content_layout);
+
+			if(!empty($content_layout)){
+				echo aw2_library::parse_shortcode($content_layout);
+			}
 			else
 				echo '<em>'.$content_layout.'</em> is missing.';
 				
