@@ -8,6 +8,7 @@ get_header(); ?>
 	<div class="content row no-gutters">
 		<div class="main col-sm-12 col-xs-12" >
 			<?php
+			$post_type = get_query_var('post_type');
 			
 			$app=&aw2_library::get_array_ref('app');
 			aw2_library::set('current_post',$post);
@@ -19,6 +20,10 @@ get_header(); ?>
 				if(aw2_library::get_module($app['collection']['config'],$layout,true)){
 					$collection=$app['collection']['config'];
 				}
+				else if(aw2_library::get_module(['service'=>'core'],$post_type.'-'.$layout,true)){
+					$layout=$post_type.'-'.$layout;
+					$collection=['service'=>'core'];
+				}				
 				else if(aw2_library::get_module(['service'=>'core'],$layout,true)){
 
 					$collection=['service'=>'core'];
