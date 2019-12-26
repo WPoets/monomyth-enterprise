@@ -9,7 +9,7 @@ get_header(); ?>
 		<div class="main col-sm-12 col-xs-12" >
 			<?php
 			$post_type = get_query_var('post_type');
-			
+
 			$app=&aw2_library::get_array_ref('app');
 			aw2_library::set('current_post',$post);
 
@@ -17,22 +17,29 @@ get_header(); ?>
 			$collection='';
 			
 			while ( have_posts() ) : the_post();
-				if(aw2_library::get_module($app['collection']['config'],$layout,true)){
-					$collection=$app['collection']['config'];
+			
+				if(!aw2_library::get_post_from_slug('single-content-layout',$app['collection']['config']['post_type'],$module_post)){
+					$awesome_core=&aw2_library::get_array_ref('awesome_core');
+					
+					
+					if(isset($awesome_core[$post_type.'-single-content-layout'])){
+						$layout = $awesome_core[$post_type.'-single-content-layout']['code'];
+							unset($awesome_core[$post_type.'single-content-layout']); // now we don't need this data
+						
+					} else if(isset($awesome_core['single-content-layout'])){
+						$layout = $awesome_core['single-content-layout']['code'];
+						
+					}
 				}
-				else if(aw2_library::get_module(['service'=>'core'],$post_type.'-'.$layout,true)){
-					$layout=$post_type.'-'.$layout;
-					$collection=['service'=>'core'];
-				}				
-				else if(aw2_library::get_module(['service'=>'core'],$layout,true)){
-
-					$collection=['service'=>'core'];
-				}
-				
-				if(!empty($collection))		
-					echo aw2_library::module_run($collection,$layout);
 				else
-					echo '<em>'.$layout.'</em> is missing.';
+					$layout = $module_post->post_content;
+				
+				unset($awesome_core['single-content-layout']); // now we don't need this data
+				
+				if(!empty($layout))		
+					echo aw2_library::parse_shortcode($layout);
+				else
+					echo '<em>single-content-layout</em> is missing.';
 				
 			endwhile; // end of the loop. ?>
 		</div><!-- /.main -->
