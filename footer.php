@@ -20,8 +20,8 @@ if (current_user_can('develop_for_awesomeui')) {
 $awesome_core=&aw2_library::get_array_ref('awesome_core');
 
 $app=&aw2_library::get_array_ref('app');
-if(isset($app['app_configs']['footer'])){
-	$header = $app['app_configs']['footer'];
+if(isset($app['configs']['footer'])){
+	$header = $app['configs']['footer'];
 	echo aw2_library::parse_shortcode($header['code']);
 }
 else if(isset($awesome_core['footer'])){
