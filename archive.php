@@ -83,11 +83,8 @@ get_header(); ?>
 				aw2_library::set('current_author_slug',$curauth->user_login);
 				aw2_library::set('current_author_name',$curauth->display_name);
 				aw2_library::set('current_author',$curauth);
-				
-				if(!aw2_library::get_post_from_slug( 'author-archive','aw2_page',$module_post))
-					aw2_library::get_post_from_slug( 'archive','aw2_core',$module_post);
-				$content_layout =$module_post->post_content;
-				
+
+				//removed the support for aw2_page				
 				if(isset($awesome_core['author-archive-content-layout'])){
 					$content_layout = $awesome_core['author-archive-content-layout']['code'];
 					unset($awesome_core['author-archive-content-layout']); // now we don't need this data
@@ -98,7 +95,7 @@ get_header(); ?>
 				echo aw2_library::parse_shortcode($content_layout);
 			}
 			else
-				echo '<em>'.$content_layout.'</em> is missing.';
+				echo '<em> archive-content-layout </em> is missing.';
 				
 				
 			?>
