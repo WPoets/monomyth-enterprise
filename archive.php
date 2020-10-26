@@ -90,6 +90,13 @@ get_header(); ?>
 					unset($awesome_core['author-archive-content-layout']); // now we don't need this data
 				}
 			}
+			else if( is_date()){
+	
+				if(isset($awesome_core['date-archive-content-layout'])){
+					$content_layout = $awesome_core['date-archive-content-layout']['code'];
+					unset($awesome_core['date-archive-content-layout']); // now we don't need this data
+				}
+			}
 
 			if(!empty($content_layout)){
 				echo aw2_library::parse_shortcode($content_layout);
