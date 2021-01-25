@@ -62,7 +62,7 @@ http://digwp.com/2010/10/customize-wordpress-dashboard/
 function bones_rss_dashboard_widget() {
 	if ( function_exists( 'fetch_feed' ) ) {
 		// include_once( ABSPATH . WPINC . '/feed.php' );               // include the required file
-		$feed = fetch_feed( 'http://www.wpoets.com/feed/rss/' );        // specify the source feed
+		$feed = fetch_feed( 'https://www.wpoets.com/feed/rss/' );        // specify the source feed
 		$limit = 0;
 		if ( ! is_wp_error( $feed ) ){
 		$limit = $feed->get_item_quantity(7);                        // specify number of items
@@ -77,9 +77,7 @@ function bones_rss_dashboard_widget() {
 			<?php echo $item->get_title(); ?>
 		</a>
 	</h4>
-	<p style="margin-top: 0.5em;">
-		<?php echo substr($item->get_description(), 0, 200); ?>
-	</p>
+	<?php echo $item->get_description(); ?>
 	<?php }
 }
 

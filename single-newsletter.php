@@ -42,9 +42,12 @@
     </style>
     <![endif]-->    
 	 <?php
-        $post_content=null;
-        awesome2_library::get_post_content('newsletter-styles','aw2_core',$post_content);
-        echo do_shortcode($post_content);
+       		
+		if(\aw2_library::post_exists("newsletter-styles",AWESOME_CORE_POST_TYPE)){
+			echo \aw2_library::module_run(['post_type'=>AWESOME_CORE_POST_TYPE],"newsletter-styles");
+		}	
+
+		
       ?>
 </head>
 <body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="background-color:#F6F6F6; font-family:Arial,serif; margin:0; padding:0; min-width: 100%; -webkit-text-size-adjust:none; -ms-text-size-adjust:none;">

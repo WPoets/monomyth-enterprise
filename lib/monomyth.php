@@ -17,6 +17,11 @@ require( 'relative-urls.php' );
 require( 'admin-cleanup.php' ); 
 
 
+
+add_action( 'enqueue_block_editor_assets', function() {
+    wp_enqueue_style( 'awesome-editor-styles', site_url('site-skin/css/editor-styles'), false, '1.0', 'all' );
+} );
+
 // launching this stuff after theme setup
 add_action( 'after_setup_theme','monomyth_theme_support' );
 
@@ -36,14 +41,7 @@ function monomyth_theme_support(){
 	// wp menus
 	add_theme_support( 'menus' );
 	
-	global $monomyth_options;
-	$MM_PRODUCTION = false;
-	if(isset($monomyth_options['dev_mode']))
-		$MM_PRODUCTION = $monomyth_options['dev_mode'];
 	
-    if($MM_PRODUCTION) {
-		add_filter('acf/settings/show_admin','__return_false');
-	}
 	
 	// Register wp_nav_menu() menus (http://codex.wordpress.org/Function_Reference/register_nav_menus)
 	register_nav_menus(array(
@@ -80,11 +78,6 @@ function monomyth_scripts() {
   global $wp_scripts;
   global $monomyth_options;
 
-
-//	  wp_enqueue_style('monomyth_app', get_template_directory_uri() . '/assets/css-cache/monomyth_app.css', false, null);
-	
-	 //wp_enqueue_style('monomyth_app', get_template_directory_uri() . '/assets/app.less', false, null);
-	
 	 wp_enqueue_style('monomyth_ie', get_template_directory_uri() . '/assets/ie.css', false, null);
 	 $wp_styles->add_data( 'monomyth_ie', 'conditional', 'lt IE 10' ); // add conditional wrapper around ie stylesheet
   // jQuery is loaded using the same method from HTML5 Boilerplate:
@@ -150,3 +143,36 @@ add_filter( 'clean_url', function( $url )
 	// not our file
     return $url;
 }, 11, 1 );
+
+
+if (!is_admin()) {
+	// default URL format
+	if (preg_match('/author=([0-9]*)/i', $_SERVER['QUERY_STRING'])){ 
+		wp_die('forbidden');
+	}
+	
+	if(preg_match('/(wp-comments-post)/', $_SERVER['REQUEST_URI']) === 0 && !empty($_REQUEST['author']) ) {
+	   /*  openlog('wordpress('.$_SERVER['HTTP_HOST'].')',LOG_NDELAY|LOG_PID,LOG_AUTH);
+		syslog(LOG_INFO,"Attempted user enumeration from {$_SERVER['REMOTE_ADDR']}");
+		closelog(); */
+		wp_die('forbidden');
+    }
+	add_filter('redirect_canonical', 'shapeSpace_check_enum', 10, 2);
+}
+
+function shapeSpace_check_enum($redirect, $request) {
+	// permalink URL format
+	if (preg_match('/\?author=([0-9]*)(\/*)/i', $request)) die();
+	else return $redirect;
+}
+
+
+add_filter( 'rest_endpoints', function( $endpoints ){
+    if ( isset( $endpoints['/wp/v2/users'] ) ) {
+        unset( $endpoints['/wp/v2/users'] );
+    }
+    if ( isset( $endpoints['/wp/v2/users/(?P<id>[\d]+)'] ) ) {
+        unset( $endpoints['/wp/v2/users/(?P<id>[\d]+)'] );
+    }
+    return $endpoints;
+});

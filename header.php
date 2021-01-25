@@ -7,7 +7,15 @@
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
-	
+<!--
+ __          __  _____                   _                                        
+ \ \        / / |  __ \                 | |                                       
+  \ \  /\  / /  | |__) |   ___     ___  | |_   ___        ___    ___    _ __ ___  
+   \ \/  \/ /   |  ___/   / _ \   / _ \ | __| / __|      / __|  / _ \  | '_ ` _ \ 
+    \  /\  /    | |      | (_) | |  __/ | |_  \__ \  _  | (__  | (_) | | | | | | |
+     \/  \/     |_|       \___/   \___|  \__| |___/ (_)  \___|  \___/  |_| |_| |_|
+                                                                                 
+-->
 	<link rel="apple-touch-icon" href="<?php echo get_template_directory_uri(); ?>/assets/images/apple-icon-touch.png">
 	<?php
 	if(aw2_library::get('settings.opt-favicon.exists')){?>
@@ -39,26 +47,13 @@
 <div id="background_ovelay"></div>
 <?php
 
-/* $app=&aw2_library::get_array_ref('app');
-
-if(isset($app['collection']['config']) && aw2_library::get_module($app['collection']['config'],'header',true)){
-	echo aw2_library::module_run($app['collection']['config'],'header');
-}	
-else if(aw2_library::get_module(['service'=>'core'],'header',true)){
-	echo aw2_library::module_run(['service'=>'core'],'header');
-}
- */
-
-$awesome_core=&aw2_library::get_array_ref('awesome_core');
-
 $app=&aw2_library::get_array_ref('app');
-if(isset($app['configs']['header'])){
-	$header = $app['configs']['header'];
-	echo aw2_library::parse_shortcode($header['code']);
-}
-else if(isset($awesome_core['header'])){
-	echo aw2_library::parse_shortcode($awesome_core['header']['code']);
-	if(isset($slug)){
-		unset($awesome_core[$slug]); // now we don't need this data
-	}
-}
+
+$module='header';
+$post_type=AWESOME_CORE_POST_TYPE;
+ 
+if(\aw2_library::post_exists($module,$app['collection']['config']['post_type'])){
+	$post_type=$app['collection']['config']['post_type'];
+}	
+
+echo \aw2_library::module_run(['post_type'=>$post_type],$module);

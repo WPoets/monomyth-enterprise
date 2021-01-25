@@ -10,27 +10,30 @@ get_header(); ?>
 			<?php 
 				
 			$app=&aw2_library::get_array_ref('app');
-			$awesome_core=&aw2_library::get_array_ref('awesome_core');
 			
-			$content_layout ='';
+			$post_type='';
+			$module ='';
 						
-			if(isset($awesome_core['archive-content-layout'])){
-				$content_layout = $awesome_core['archive-content-layout']['code'];
-				unset($awesome_core['archive-content-layout']); // now we don't need this data
+			
+			
+			if(\aw2_library::post_exists('archive-content-layout',AWESOME_CORE_POST_TYPE)){
+					$post_type=AWESOME_CORE_POST_TYPE;
+					$module='archive-content-layout';
 			}
 			
-			if(aw2_library::get_post_from_slug('archive-content-layout',$app['collection']['config']['post_type'],$module_post)){
+			if(\aw2_library::post_exists('archive-content-layout',$app['collection']['config']['post_type'])){
 
-				$content_layout =$module_post->post_content;
+				$post_type=$app['collection']['config']['post_type'];
+				$module='archive-content-layout';
 			}
 			else if(is_post_type_archive( ))
 			{
 				$post_type = get_query_var('post_type');
 				aw2_library::set('current_archive_name',$post_type);
 
-				if(isset($awesome_core[$post_type . '-archive-content-layout'])){
-					$content_layout = $awesome_core[$post_type . '-archive-content-layout']['code'];
-					unset($awesome_core[$post_type . '-archive-content-layout']); // now we don't need this data
+				if(\aw2_library::post_exists($post_type . '-archive-content-layout',AWESOME_CORE_POST_TYPE)){
+					$post_type=AWESOME_CORE_POST_TYPE;
+					$module=$post_type . '-archive-content-layout';
 				}
 			}
 			else if(is_tax())
@@ -41,9 +44,9 @@ get_header(); ?>
 				aw2_library::set('current_archive_name',$tax->name);
 				aw2_library::set('default_term_id',$tax->term_id);
 
-				if(isset($awesome_core[$tax->taxonomy  . '-archive-content-layout'])){
-					$content_layout = $awesome_core[$tax->taxonomy  . '-archive-content-layout']['code'];
-					unset($awesome_core[$tax->taxonomy  . '-archive-content-layout']); // now we don't need this data
+				if(\aw2_library::post_exists($tax->taxonomy  . '-archive-content-layout',AWESOME_CORE_POST_TYPE)){
+					$post_type=AWESOME_CORE_POST_TYPE;
+					$module=$tax->taxonomy  . '-archive-content-layout';
 				}
 			}
 			else if(is_category()){
@@ -53,9 +56,9 @@ get_header(); ?>
 				aw2_library::set('current_archive_name',$cat->name);
 				aw2_library::set('default_term_id',$cat->term_id);
 		
-				if(isset($awesome_core[$cat->slug  . '-archive-content-layout'])){
-					$content_layout = $awesome_core[$cat->slug  . '-archive-content-layout']['code'];
-					unset($awesome_core[$cat->slug  . '-archive-content-layout']); // now we don't need this data
+				if(\aw2_library::post_exists($cat->slug  . '-archive-content-layout',AWESOME_CORE_POST_TYPE)){
+					$post_type=AWESOME_CORE_POST_TYPE;
+					$module=$cat->slug  . '-archive-content-layout';
 				}
 			}
 			else if( is_tag()){
@@ -66,9 +69,10 @@ get_header(); ?>
 				aw2_library::set('current_archive_name',$tax->name);
 				aw2_library::set('default_term_id',$tax->term_id);
 				
-				if(isset($awesome_core[$tax->taxonomy  . '-archive-content-layout'])){
-					$content_layout = $awesome_core[$tax->taxonomy  . '-archive-content-layout']['code'];
-					unset($awesome_core[$tax->taxonomy  . '-archive-content-layout']); // now we don't need this data
+				
+				if(\aw2_library::post_exists($tax->taxonomy  . '-archive-content-layout',AWESOME_CORE_POST_TYPE)){
+					$post_type=AWESOME_CORE_POST_TYPE;
+					$module=$tax->taxonomy  . '-archive-content-layout';
 				}
 			}
 			else if( is_author()){
@@ -84,26 +88,24 @@ get_header(); ?>
 				aw2_library::set('current_author_name',$curauth->display_name);
 				aw2_library::set('current_author',$curauth);
 
-				//removed the support for aw2_page				
-				if(isset($awesome_core['author-archive-content-layout'])){
-					$content_layout = $awesome_core['author-archive-content-layout']['code'];
-					unset($awesome_core['author-archive-content-layout']); // now we don't need this data
+				if(\aw2_library::post_exists('author-archive-content-layout',AWESOME_CORE_POST_TYPE)){
+					$post_type=AWESOME_CORE_POST_TYPE;
+					$module='author-archive-content-layout';
 				}
 			}
 			else if( is_date()){
 	
-				if(isset($awesome_core['date-archive-content-layout'])){
-					$content_layout = $awesome_core['date-archive-content-layout']['code'];
-					unset($awesome_core['date-archive-content-layout']); // now we don't need this data
+				if(\aw2_library::post_exists('date-archive-content-layout',AWESOME_CORE_POST_TYPE)){
+					$post_type=AWESOME_CORE_POST_TYPE;
+					$module='date-archive-content-layout';
 				}
 			}
 
-			if(!empty($content_layout)){
-				echo aw2_library::parse_shortcode($content_layout);
+			if(!empty($post_type) && !empty($module)){
+				echo \aw2_library::module_run(['post_type'=>$post_type],$module);
 			}
 			else
 				echo '<em> archive-content-layout </em> is missing.';
-				
 				
 			?>
 		</main><!-- /.main -->

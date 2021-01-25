@@ -8,36 +8,35 @@ get_header(); ?>
 	<div class="content row no-gutters">
 		<div class="main col-sm-12 col-xs-12" >
 			<?php
-			$post_type = get_query_var('post_type');
+		
+			$single_post_type = get_query_var('post_type');
 
 			$app=&aw2_library::get_array_ref('app');
 			aw2_library::set('current_post',$post);
-
-			$layout ='single-content-layout';
-			$collection='';
 			
-			while ( have_posts() ) : the_post();
+			$post_type='';
+			$module ='single-content-layout';
 			
-				if(!aw2_library::get_post_from_slug('single-content-layout',$app['collection']['config']['post_type'],$module_post)){
-					$awesome_core=&aw2_library::get_array_ref('awesome_core');
-					
-					
-					if(isset($awesome_core[$post_type.'-single-content-layout'])){
-						$layout = $awesome_core[$post_type.'-single-content-layout']['code'];
-							unset($awesome_core[$post_type.'single-content-layout']); // now we don't need this data
-						
-					} else if(isset($awesome_core['single-content-layout'])){
-						$layout = $awesome_core['single-content-layout']['code'];
-						
-					}
+			
+			while ( have_posts() ) : the_post();		
+				
+				if(\aw2_library::post_exists($single_post_type.'-single-content-layout',$app['collection']['config']['post_type'])){
+					$module=$single_post_type.'-single-content-layout';
+					$post_type=$app['collection']['config']['post_type'];
 				}
-				else
-					$layout = $module_post->post_content;
-				
-				unset($awesome_core['single-content-layout']); // now we don't need this data
-				
-				if(!empty($layout))		
-					echo aw2_library::parse_shortcode($layout);
+				else if(\aw2_library::post_exists($single_post_type.'-single-content-layout',AWESOME_CORE_POST_TYPE)){
+					$module=$single_post_type.'-single-content-layout';
+					$post_type=AWESOME_CORE_POST_TYPE;
+				}
+				else if(\aw2_library::post_exists($module,$app['collection']['config']['post_type'])){
+					$post_type=$app['collection']['config'];
+				}
+				else if(\aw2_library::post_exists($module,AWESOME_CORE_POST_TYPE)){
+					$post_type=AWESOME_CORE_POST_TYPE;
+				}
+					
+				if(!empty($post_type))		
+					echo \aw2_library::module_run(['post_type'=>$post_type],$module);
 				else
 					echo '<em>single-content-layout</em> is missing.';
 				
