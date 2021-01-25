@@ -10,7 +10,8 @@
  */
 function soil_root_relative_url($input) {
   preg_match('|https?://([^/]+)(/.*)|i', $input, $matches);
-
+  if(!isset($_SERVER)) return $input;
+  
   if (!isset($matches[1]) || !isset($matches[2])) {
     return $input;
   } elseif (($matches[1] === $_SERVER['SERVER_NAME']) || $matches[1] === $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT']) {
