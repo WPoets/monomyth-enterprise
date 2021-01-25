@@ -16,6 +16,10 @@ require( 'nice-search.php' );
 require( 'relative-urls.php' ); 
 require( 'admin-cleanup.php' ); 
 
+add_action( 'enqueue_block_editor_assets', function() {
+    wp_enqueue_style( 'awesome-editor-styles', site_url('site-skin/css/editor-styles'), false, '1.0', 'all' );
+} );
+
 
 
 add_action( 'enqueue_block_editor_assets', function() {
