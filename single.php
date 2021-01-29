@@ -29,7 +29,7 @@ get_header(); ?>
 					$post_type=AWESOME_CORE_POST_TYPE;
 				}
 				else if(\aw2_library::post_exists($module,$app['collection']['config']['post_type'])){
-					$post_type=$app['collection']['config'];
+					$post_type=$app['collection']['config']['post_type'];
 				}
 				else if(\aw2_library::post_exists($module,AWESOME_CORE_POST_TYPE)){
 					$post_type=AWESOME_CORE_POST_TYPE;
