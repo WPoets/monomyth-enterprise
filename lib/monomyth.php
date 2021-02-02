@@ -147,9 +147,11 @@ add_filter( 'clean_url', function( $url )
 
 if (!is_admin()) {
 	// default URL format
-	if (preg_match('/author=([0-9]*)/i', $_SERVER['QUERY_STRING'])){ 
+	$query_string= isset($_SERVER['QUERY_STRING'])? $_SERVER['QUERY_STRING']:'';
+	if (preg_match('/author=([0-9]*)/i', $query_string)){ 
 		wp_die('forbidden');
 	}
+	
 	
 	if(preg_match('/(wp-comments-post)/', $_SERVER['REQUEST_URI']) === 0 && !empty($_REQUEST['author']) ) {
 	   /*  openlog('wordpress('.$_SERVER['HTTP_HOST'].')',LOG_NDELAY|LOG_PID,LOG_AUTH);
