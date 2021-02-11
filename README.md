@@ -15,6 +15,10 @@ You will need to update the wp-config.php file with various defines specified in
 
 ### Changelog  
 
+##### 3.3.1  
+* Fixed: Custom HTML template was throwing errors. 
+* Improved: 'landing-page-header' & 'landing-page-footer' module from awesome core is now used to display header and footer when using Landing Page template.
+
 ##### 3.3.0  
 * Improved: Switched to module_run to make it better to debug.  
 

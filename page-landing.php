@@ -1,10 +1,9 @@
 <?php
 /**
  Template Name: Landing Page
- * The template for displaying landing pages.
+ * The template for displaying landing pages you have to create separate header 'landing-page-header' & footer 'landing-page-footer' module in awesome core.
  */
 
-$aw2_header='page-landing-header' ;
 get_header(); ?>
 <div class="container-fluid no-padding">
 <div class="content row no-gutters">
@@ -22,5 +21,4 @@ get_header(); ?>
 </div><!-- /.content -->
 </div><!--#container -->
 <?php 
-$aw2_footer='page-landing-footer' ;
 get_footer(); 

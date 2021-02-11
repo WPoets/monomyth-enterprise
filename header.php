@@ -14,7 +14,6 @@
    \ \/  \/ /   |  ___/   / _ \   / _ \ | __| / __|      / __|  / _ \  | '_ ` _ \ 
     \  /\  /    | |      | (_) | |  __/ | |_  \__ \  _  | (__  | (_) | | | | | | |
      \/  \/     |_|       \___/   \___|  \__| |___/ (_)  \___|  \___/  |_| |_| |_|
-                                                                                 
 -->
 	<link rel="apple-touch-icon" href="<?php echo get_template_directory_uri(); ?>/assets/images/apple-icon-touch.png">
 	<?php
@@ -50,8 +49,9 @@
 $app=&aw2_library::get_array_ref('app');
 
 $module='header';
-$post_type=AWESOME_CORE_POST_TYPE;
- 
+if(basename( get_page_template() )==='page-landing.php') $module='landing-page-header';
+
+$post_type=AWESOME_CORE_POST_TYPE; 
 if(\aw2_library::post_exists($module,$app['collection']['config']['post_type'])){
 	$post_type=$app['collection']['config']['post_type'];
 }	
