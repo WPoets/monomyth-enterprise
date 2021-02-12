@@ -52,7 +52,7 @@ $module='header';
 if(basename( get_page_template() )==='page-landing.php') $module='landing-page-header';
 
 $post_type=AWESOME_CORE_POST_TYPE; 
-if(\aw2_library::post_exists($module,$app['collection']['config']['post_type'])){
+if(isset($app['collection']['config']['post_type']) && \aw2_library::post_exists($module,$app['collection']['config']['post_type'])){
 	$post_type=$app['collection']['config']['post_type'];
 }	
 
