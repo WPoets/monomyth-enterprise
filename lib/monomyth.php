@@ -152,8 +152,10 @@ if (!is_admin()) {
 		wp_die('forbidden');
 	}
 	
+	$request_uri = isset($_SERVER['REQUEST_URI'])? $_SERVER['REQUEST_URI']:'';
+	$author = isset($_REQUEST['author'])? $_REQUEST['author']:'';
 	
-	if(preg_match('/(wp-comments-post)/', $_SERVER['REQUEST_URI']) === 0 && !empty($_REQUEST['author']) ) {
+	if(preg_match('/(wp-comments-post)/', $request_uri) === 0 && !empty($author) ) {
 	   /*  openlog('wordpress('.$_SERVER['HTTP_HOST'].')',LOG_NDELAY|LOG_PID,LOG_AUTH);
 		syslog(LOG_INFO,"Attempted user enumeration from {$_SERVER['REMOTE_ADDR']}");
 		closelog(); */
