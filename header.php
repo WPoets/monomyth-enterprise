@@ -7,6 +7,7 @@
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link href="https://cdn.getawesomestudio.com" rel="preconnect" crossorigin>
 <!--
  __          __  _____                   _                                        
  \ \        / / |  __ \                 | |                                       
@@ -15,7 +16,6 @@
     \  /\  /    | |      | (_) | |  __/ | |_  \__ \  _  | (__  | (_) | | | | | | |
      \/  \/     |_|       \___/   \___|  \__| |___/ (_)  \___|  \___/  |_| |_| |_|
 -->
-	<link rel="apple-touch-icon" href="<?php echo get_template_directory_uri(); ?>/assets/images/apple-icon-touch.png">
 	<?php
 	if(aw2_library::get('settings.opt-favicon.exists')){?>
 	<link rel="icon" href="<?php
@@ -33,9 +33,6 @@
 	}
 	?>
 	<![endif]-->
-	<?php // or, set /favicon.ico for IE10 win ?>
-	<meta name="msapplication-TileColor" content="#f01d4f">
-	<meta name="msapplication-TileImage" content="<?php echo get_template_directory_uri(); ?>/assets/images/win8-tile-icon.png">
 	<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
 	<?php 
 	
