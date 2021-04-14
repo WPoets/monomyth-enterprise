@@ -28,12 +28,14 @@ get_header(); ?>
 			}
 			else if(is_post_type_archive( ))
 			{
-				$post_type = get_query_var('post_type');
-				aw2_library::set('current_archive_name',$post_type);
+				$active_post_type = get_query_var('post_type');
+				aw2_library::set('current_archive_name',$active_post_type);
 
-				if(\aw2_library::post_exists($post_type . '-archive-content-layout',AWESOME_CORE_POST_TYPE)){
-					$post_type=AWESOME_CORE_POST_TYPE;
-					$module=$post_type . '-archive-content-layout';
+				if(\aw2_library::post_exists($active_post_type . '-archive-content-layout',AWESOME_CORE_POST_TYPE)){
+					
+					$module=$active_post_type . '-archive-content-layout';
+					$post_type=AWESOME_CORE_POST_TYPE; 
+					
 				}
 			}
 			else if(is_tax())
