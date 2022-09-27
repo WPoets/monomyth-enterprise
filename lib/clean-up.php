@@ -225,15 +225,15 @@ function disable_emojis_tinymce_monomyth( $plugins ) {
 	}
 }
 
-/*
+
 function mytheme_remove_admin_bar() {
-	if(!current_user_can( 'develop_for_awesomeui' )){ 
+	if(current_user_can( 'subscriber' )){ 
 		show_admin_bar( false );
 	}
 }
 add_action( 'after_setup_theme', 'mytheme_remove_admin_bar' );	
 
-*/
+
 function ajax_check_user_logged_in() {
     echo is_user_logged_in()?'yes':'no';
     die();
