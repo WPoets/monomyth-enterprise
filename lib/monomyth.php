@@ -172,6 +172,11 @@ function shapeSpace_check_enum($redirect, $request) {
 
 
 add_filter( 'rest_endpoints', function( $endpoints ){
+    // if user is logged in don't do any thing.
+    if (is_user_logged_in() ) {
+      return $endpoints;
+    }
+
     if ( isset( $endpoints['/wp/v2/users'] ) ) {
         unset( $endpoints['/wp/v2/users'] );
     }
