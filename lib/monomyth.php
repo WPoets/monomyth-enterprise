@@ -87,6 +87,7 @@ function monomyth_scripts() {
     wp_deregister_script('jquery');
     //wp_register_script('jquery', 'https://cdn.loantap.in/jquery/1.11.3/jquery.min.js', array(), null, false);
     //wp_register_script('jquery', '//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js', array(), null, false);
+    wp_register_script('jquery', false, array(), null, false);	  
   }
 
   if (is_single() && comments_open() && get_option('thread_comments')) {
