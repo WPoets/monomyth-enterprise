@@ -12,6 +12,11 @@ function soil_nice_search_redirect() {
 
   $search_base = $wp_rewrite->search_base;
   if (is_search() && !is_admin() && strpos($_SERVER['REQUEST_URI'], "/{$search_base}/") === false) {
+    $post_type='';
+    if(isset($_REQUEST['post_type']) && is_array($_REQUEST['post_type'])){
+       $post_type= '?'.http_build_query(array('post_type'=>$_REQUEST['post_type']));
+    }
+    
     wp_redirect(home_url("/{$search_base}/" . urlencode(get_query_var('s'))));
     exit();
   }
