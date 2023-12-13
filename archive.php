@@ -26,7 +26,8 @@ get_header(); ?>
 				$post_type=$app['collection']['config']['post_type'];
 				$module='archive-content-layout';
 			}
-			else if(is_post_type_archive( ))
+			
+			if(is_post_type_archive( ))
 			{
 				$active_post_type = get_query_var('post_type');
 				aw2_library::set('current_archive_name',$active_post_type);

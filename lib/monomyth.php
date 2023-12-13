@@ -18,9 +18,10 @@ require( 'admin-cleanup.php' );
 
 
 add_action( 'enqueue_block_editor_assets', function() {
-    wp_enqueue_style( 'awesome-editor-styles', site_url('site-skin/css/editor-styles'), false, '1.0', 'all' );
-} );
+  wp_enqueue_style( 'awesome-css', site_url('site-skin/css/awesome-css'), false, '1.0', 'all' );
+  wp_enqueue_style( 'awesome-editor-styles', site_url('site-skin/css/editor-styles'), false, '1.0', 'all' );
 
+},1 );
 
 // launching this stuff after theme setup
 add_action( 'after_setup_theme','monomyth_theme_support' );
