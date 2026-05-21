@@ -23,7 +23,7 @@ function soil_nice_search_redirect() {
       $order_by .= http_build_query(array('orderby'=>$_REQUEST['orderby']));
   }
     
-    wp_redirect(home_url("/{$search_base}/" . urlencode(get_query_var('s'))));
+    wp_redirect(home_url("/{$search_base}/" . urlencode(get_query_var('s')). $post_type . $order_by));
     exit();
   }
 }
